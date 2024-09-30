@@ -1,2 +1,3 @@
 
 print('test')
+list1 = [1, 2, 3]
