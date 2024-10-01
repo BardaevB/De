@@ -6,6 +6,6 @@ class df
     else
         print('b')
 
-
+j = int
 
 
