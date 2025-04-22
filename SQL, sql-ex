@@ -1,0 +1,62 @@
+--1--
+SELECT name
+FROM music.d_artists da 
+ORDER BY followers DESC 
+LIMIT 5;
+--2--
+SELECT name 
+FROM music.d_artists da 
+WHERE name LIKE '%Ed %';
+
+SELECT COUNT(*) AS cnt
+FROM music.d_artists da 
+WHERE  name LIKE '%Ed %';
+
+--3--
+SELECT COUNT(*) AS cnt
+FROM music.d_artists da 
+WHERE followers >= 1000000;
+
+--4--
+SELECT name 
+FROM music.d_artists da 
+ORDER  BY LENGTH(name) DESC 
+LIMIT 10;
+
+--5--
+SELECT COUNT(*) AS cnt
+FROM music.d_artists da 
+WHERE popularity = 0 AND followers > 1000;
+
+--6--
+SELECT release_date_precision, COUNT(DISTINCT id) AS cnt
+FROM music.d_album da 
+GROUP BY release_date_precision;
+
+--7--
+SELECT release_date_precision, COUNT(DISTINCT id) AS cnt, ROUND(100.0*COUNT(DISTINCT id)/SUM(COUNT(DISTINCT id)) OVER(), 4) AS procent 
+FROM music.d_album da 
+GROUP BY release_date_precision;
+
+--8
+SELECT ROUND(release_date::VARCHAR(4)::INT, -1) AS year_period, COUNT(DISTINCT spotify_id) AS cnt
+FROM music.d_album
+GROUP BY year_period
+ORDER BY year_period DESC;
+
+SELECT COUNT (DISTINCT spotify_id) AS cnt, date_trunc('decade', release_date) AS decade
+FROM d_album
+GROUP BY decade
+ORDER BY decade DESC
+
+select
+    coalesce(EXTRACT(DECADE FROM release_date) || '0' || ' - ' || EXTRACT(DECADE FROM release_date) || '9', 'no date') as decade,
+    count(1) as cnt
+from music.d_album
+group by coalesce(EXTRACT(DECADE FROM release_date) || '0' || ' - ' || EXTRACT(DECADE FROM release_date) || '9', 'no date')
+order BY decade
+
+SELECT FLOOR(date_part('year',release_date)*0.1)*10 AS decade, count(id) AS cnt
+FROM d_album
+GROUP BY decaded
+ORDER BY decade asc
